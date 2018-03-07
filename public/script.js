@@ -26,16 +26,16 @@ var app = new Vue({
   },
   methods: {
     addItem: function() {
-      this.todos.push({text: this.message,completed:false});
-      this.message = '';
+      this.items.push({text: this.text,completed:false});
+      this.text = '';
     },
     completeItem: function(item) {
       item.completed = !item.completed;
     },
     deleteItem: function(item) {
-      var index = this.todos.indexOf(item);
+      var index = this.items.indexOf(item);
       if (index > -1)
-	this.todos.splice(index,1);
+	this.items.splice(index,1);
     },
     showAll: function() {
       this.show = 'all';
@@ -47,7 +47,7 @@ var app = new Vue({
       this.show = 'completed';
     },
     deleteCompleted: function() {
-      this.todos = this.todos.filter(function(item) {
+      this.items = this.items.filter(function(item) {
 	return !item.completed;
       });
     },
@@ -55,10 +55,10 @@ var app = new Vue({
       this.drag = item;
     },
     dropItem: function(item) {
-      var indexItem = this.todos.indexOf(this.drag);
-      var indexTarget = this.todos.indexOf(item);
-      this.todos.splice(indexItem,1);
-      this.todos.splice(indexTarget,0,this.drag);
+      var indexItem = this.items.indexOf(this.drag);
+      var indexTarget = this.items.indexOf(item);
+      this.items.splice(indexItem,1);
+      this.items.splice(indexTarget,0,this.drag);
     },
   }
 });
