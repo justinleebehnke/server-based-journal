@@ -1,4 +1,4 @@
-# Adding a server for the todo list app
+# Node server for the todo list app
 
 In a previous activity we created a todo list with Vue. In this lab, we'll add a Node server with a
 REST API.  This will allow the list to be saved even if the user refreshes their browser. We won't
