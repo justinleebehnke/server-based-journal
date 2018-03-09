@@ -6,6 +6,10 @@ var app = new Vue({
     show: 'all',
     drag: {},
   },
+  created: function() {
+  this.getItems();
+  },
+
   computed: {
     activeItems: function() {
       return this.items.filter(function(item) {
@@ -26,16 +30,39 @@ var app = new Vue({
   },
   methods: {
     addItem: function() {
-      this.items.push({text: this.text,completed:false});
-      this.text = '';
+      axios.post("/api/items", {
+	text: this.text,
+	completed: false
+      }).then(response => {
+	this.text = "";
+	this.getItems();
+	return true;
+      }).catch(err => {
+      });
     },
-    completeItem: function(item) {
-      item.completed = !item.completed;
-    },
+    getItems: function() {
+    axios.get("/api/items").then(response => {
+  this.items = response.data;
+  return true;
+    }).catch(err => {
+    });
+  },
+  completeItem: function(item) {
+    axios.put("/api/items/" + item.id, {
+text: item.text,
+completed: !item.completed,
+orderChange: false,
+    }).then(response => {
+return true;
+    }).catch(err => {
+    });
+  },
     deleteItem: function(item) {
-      var index = this.items.indexOf(item);
-      if (index > -1)
-	this.items.splice(index,1);
+      axios.delete("/api/items/" + item.id).then(response => {
+	this.getItems();
+	return true;
+      }).catch(err => {
+      });
     },
     showAll: function() {
       this.show = 'all';
@@ -47,18 +74,25 @@ var app = new Vue({
       this.show = 'completed';
     },
     deleteCompleted: function() {
-      this.items = this.items.filter(function(item) {
-	return !item.completed;
+      this.items.forEach(item => {
+	if (item.completed)
+	  this.deleteItem(item)
       });
     },
     dragItem: function(item) {
       this.drag = item;
     },
     dropItem: function(item) {
-      var indexItem = this.items.indexOf(this.drag);
-      var indexTarget = this.items.indexOf(item);
-      this.items.splice(indexItem,1);
-      this.items.splice(indexTarget,0,this.drag);
+      axios.put("/api/items/" + this.drag.id, {
+	text: this.drag.text,
+	completed: this.drag.completed,
+	orderChange: true,
+	orderTarget: item.id
+      }).then(response => {
+	this.getItems();
+	return true;
+      }).catch(err => {
+      });
     },
   }
 });
