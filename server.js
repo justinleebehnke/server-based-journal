@@ -16,7 +16,7 @@ app.get('/api/items', (req, res) => {
 
 app.post('/api/items', (req, res) => {
   id = id + 1;
-  let item = {id:id, text:req.body.text, completed: req.body.completed};
+  let item = {id:id, selected:req.body.selected, text:req.body.text, completed: req.body.completed};
   items.push(item);
   res.send(item);
 });
@@ -28,6 +28,7 @@ app.put('/api/items/:id', (req, res) => {
   let item = items[index];
   item.completed = req.body.completed;
   item.text = req.body.text;
+  item.selected = req.body.selected;
   // handle drag and drop re-ordering
   if (req.body.orderChange) {
     let indexTarget = itemsMap.indexOf(req.body.orderTarget);

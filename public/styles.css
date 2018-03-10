@@ -4,6 +4,9 @@ body {
     padding: 20px 100px 0px 100px;
     background: #f3f3f3;
 }
+#app {
+  margin-bottom: 75px;
+}
 
 /* List */
 
@@ -59,4 +62,15 @@ button {
 
 .controls {
     margin-top: 20px;
+}
+
+footer {
+    margin-top: 100px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
 }
