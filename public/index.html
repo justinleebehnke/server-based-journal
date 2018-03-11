@@ -12,9 +12,11 @@
         <br>Add a task name, select a priority then add it to the list!</p>
       <form v-on:submit.prevent="addItem">
         <input type="text" v-model="text">
-        <input type="radio" name="priority" value="High" v-model="selected"> High
-        <input type="radio" name="priority" value="Medium" v-model="selected"> Medium
-        <input type="radio" name="priority" value="Low" v-model="selected"> Low<br>
+        <select v-model="selected">
+          <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select><br>
         <button type="submit"> Add Task</button>
       </form>
       <div class="controls">
@@ -26,7 +28,17 @@
       </div>
       <ul>
       	<li v-for="item in filteredItems" draggable="true" v-on:dragstart="dragItem(item)" v-on:dragover.prevent v-on:drop="dropItem(item)">
-      	  <input type="checkbox" v-model="item.completed" v-on:click="completeItem(item)" /><label v-bind:class="{ completed: item.completed }">{{ item.text }} <br>Priority: {{ item.selected }}</label><button v-on:click="deleteItem(item)" class="delete">X</button>
+      	  <input type="checkbox" v-model="item.completed" v-on:click="completeItem(item)"/>
+          <label v-bind:class="{ completed: item.completed }">
+            {{ item.text }}
+            <br>
+            <select v-on:click="updatePriority(item)" v-model="item.selected">
+              <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+              </option>
+            </select>
+          </label>
+          <button v-on:click="deleteItem(item)" class="delete">X</button>
       	</li>
       </ul>
     </div>

@@ -6,6 +6,11 @@ var app = new Vue({
     text: '',
     show: 'all',
     drag: {},
+    options: [
+      { text: 'High', value: 'High' },
+      { text: 'Medium', value: 'Medium' },
+      { text: 'Low', value: 'Low' }
+    ],
   },
   created: function() {
   this.getItems();
@@ -56,6 +61,18 @@ var app = new Vue({
       axios.put("/api/items/" + item.id, {
         text: item.text,
         completed: !item.completed,
+        selected: item.selected,
+        orderChange: false,
+      }).then(response => {
+        return true;
+      }).catch(err => {
+      });
+    },
+    updatePriority: function(item) {
+      axios.put("/api/items/" + item.id, {
+        selected: item.selected,
+        text: item.text,
+        completed: item.completed,
         orderChange: false,
       }).then(response => {
         return true;
