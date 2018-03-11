@@ -13,6 +13,24 @@ let id = 0;
 app.get('/api/items', (req, res) => {
   res.send(items);
 });
+app.get('/api/items/sort', (req, res) => {
+  items.sort(function(a,b) {
+    if (a.selected === "High") {
+      return -1;
+    }
+    if (b.selected === "High") {
+      return 1;
+    }
+    if (a.selected === "Low") {
+      return 1;
+    }
+    if (b.selected === "Low") {
+      return -1;
+    }
+    return 0;
+  })
+  res.send(items);
+});
 
 app.post('/api/items', (req, res) => {
   id = id + 1;

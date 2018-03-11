@@ -49,9 +49,7 @@ var app = new Vue({
         });
     },
     getItems: function() {
-      axios.get("/api/items", {
-        sort: false,
-      }).then(response => {
+      axios.get("/api/items").then(response => {
         this.items = response.data;
         return true;
       }).catch(err => {
@@ -102,7 +100,7 @@ var app = new Vue({
       });
     },
     sortItems: function() {
-      axios.get("/api/items/", {sort: true}).then(response => {
+      axios.get("/api/items/sort").then(response => {
         this.getItems();
         return true;
       }).catch(err => {
