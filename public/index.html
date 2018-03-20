@@ -1,53 +1,58 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css"/>
-    <title>Vue Todo</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <title>Marathon</title>
   </head>
   <body>
     <div id="app">
-      <h1>A List of Things To Do</h1>
-      <p v-show="activeItems.length === 0">You are done with all your tasks! Good job!
-        <br>Add a task name, select a priority then add it to the list!</p>
-      <form v-on:submit.prevent="addItem">
-        <input type="text" v-model="text">
-        <select v-model="selected">
-          <option v-for="option in options" v-bind:value="option.value">
-            {{ option.text }}
-          </option>
-        </select><br>
-        <button type="submit"> Add Task</button>
-      </form>
-      <div class="controls">
-      	<button v-on:click="showAll()">Show All</button>
-      	<button v-on:click="showActive()">Show Active</button>
-      	<button v-on:click="showCompleted()">Show Completed</button>
-        <button v-on:click="sortItems()">Sort Items</button>
-      	<button v-on:click="deleteCompleted()">Delete Completed</button>
+      <h1>St George Marathon Preparation Journal</h1>
+      <h2 id="countDown"></h2>
+      <div>
+        <img src="marathon.jpg" style="float:right">
+        <h3>Journaling while you train is a great way to<br>
+            learn from any mistakes. It can also help you<br>
+            keep yourself and your teammates accountable<br>
+            Here is a site that allows you and your friends<br>
+            to journal your progress together!</h3>
+        <h3>To see what others have posted,<br> you must first add your entry</h3>
+        <form v-on:submit.prevent="addPost">
+          <input v-model="addedUser" placeholder="Your Name"></p>
+          <input v-model="addedTeam" placeholder="Team Name"></p>
+          <input v-model="addedDate" placeholder="Date"></p>
+          <input v-model="addedGoal" placeholder="Your Goal Miles to Run"></p>
+          <input v-model="addedMiles" placeholder="Actual Miles Run"></p>
+          <input v-model="addedDuration" placeholder="Total Time Running"></p>
+          <input v-model="addedWeather" placeholder="Weather Conditions"></p>
+          <textarea v-model="addedComment" placeholder="What did you learn? any mistakes?"></textarea>
+        </br>
+          <button type="submit">Post</button>
+        </form>
+        <h3>Posts </h3>
+        <hr>
+        <li v-for="post in posts">
+          <button v-on:click="deletePost(post)" class="delete">X</button>
+          <p>Runner: {{post.user}}
+          <br>Team: {{post.team}}
+          <br>Date: {{post.date}}
+          <br>Miles Attempted: {{post.goal}}
+          <br>Miles Run: {{post.miles}}
+          <br>Total Time: {{post.time}}
+          <br>Weather: {{post.weather}}
+          <br>Comments: {{post.text}}</p>
+          <hr>
+        </li>
       </div>
-      <ul>
-      	<li v-for="item in filteredItems" draggable="true" v-on:dragstart="dragItem(item)" v-on:dragover.prevent v-on:drop="dropItem(item)">
-      	  <input type="checkbox" v-model="item.completed" v-on:click="completeItem(item)"/>
-          <label v-bind:class="{ completed: item.completed }">
-            {{ item.text }}
-            <br>
-            <select v-on:click="updatePriority(item)" v-model="item.selected">
-              <option v-for="option in options" v-bind:value="option.value">
-                {{ option.text }}
-              </option>
-            </select>
-          </label>
-          <button v-on:click="deleteItem(item)" class="delete">X</button>
-      	</li>
-      </ul>
     </div>
     <footer>
       <p>Posted by: Justin Behnke |
-      Click <a href="https://github.com/BYU-CS260-Winter-2018/lab-4-justinleebehnke">here</a> to see my repository.</p>
+      Click <a href="https://github.com/justinleebehnke/marathonJournal">here</a> to see my repository.</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js" integrity="sha256-pU9euBaEcVl8Gtg+FRYCtin2vKLN8sx5/4npZDmY2VA=" crossorigin="anonymous"></script>
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
+    <script src="countdown.js"></script>
   </body>
 </html>

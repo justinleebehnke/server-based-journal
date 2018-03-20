@@ -1,76 +1,57 @@
+.v-model {
+  background: #F0C755;
+}
 body {
-    font-family: 'Arvo';
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     padding: 20px 100px 0px 100px;
-    background: #f3f3f3;
-}
-#app {
-  margin-bottom: 75px;
+    background: #F0C755;
 }
 
-/* List */
-
-ul {
-    list-style: none;
-}
-
-li {
-    background: #fff;
-    width: 500px;
-    min-height: 30px;
-    padding: 10px;
-    margin-bottom: 10px;
+button {
+    font-family: 'Montserrat', sans-serif;
     font-size: 1em;
-    display: flex;
-    align-items: center;
+    color: #5C110F;
+}
+
+textarea {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    width: 100%;
+    max-width: 500px;
+    height: 100px;
+    color: #5C110F;
+}
+form input {
+  color: #5C110F;
+}
+img {
+  max-width: 50%;
+}
+h1 {
+  color: #5C110F;
+}
+h2 {
+  color: #5C110F;
+}
+h3 {
+  color: #5C110F;
+}
+p {
+  color: #5C110F;
+}
+text {
+  color: #5C110F;
 }
 
 .delete {
     display: none;
-    margin-left: auto;
+    float: right;
 }
 
 li:hover .delete {
     display: block;
 }
-
-label {
-    width: 400px;
-}
-
-.completed {
-    text-decoration: line-through;
-}
-
-/* Form */
-
-input[type=checkbox] {
-    transform: scale(1.5);
-    margin-right: 10px;
-}
-
-input[type=text] {
-    font-size: 1em;
-}
-
-button {
-    font-family: 'Arvo';
-    font-size: 1em;
-}
-
-/* Controls */
-
-.controls {
-    margin-top: 20px;
-}
-
-footer {
-    margin-top: 100px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: black;
-    color: white;
-    text-align: center;
+li {
+  list-style: none;
 }

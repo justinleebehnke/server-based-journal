@@ -1,126 +1,59 @@
 var app = new Vue({
-  el: '#app',
+   el: '#app',
   data: {
-    items: [],
-    selected: 'Medium',
-    text: '',
-    show: 'all',
-    drag: {},
-    options: [
-      { text: 'High', value: 'High' },
-      { text: 'Medium', value: 'Medium' },
-      { text: 'Low', value: 'Low' }
-    ],
+    addedUser: '',
+    addedTeam: '',
+    addedDate: '',
+    addedMiles: '',
+    addedGoal: '',
+    addedDuration: '',
+    addedWeather: '',
+    addedComment: '',
+    posts: [],
   },
-  created: function() {
-  this.getItems();
-  },
-
   computed: {
-    activeItems: function() {
-      return this.items.filter(function(item) {
-	       return !item.completed;
-      });
-    },
-    filteredItems: function() {
-      if (this.show === 'active')
-	     return this.items.filter(function(item) {
-  	    return !item.completed;
-  	   });
-      if (this.show === 'completed')
-	     return this.items.filter(function(item) {
-         return item.completed;
-  	   });
-      return this.items;
+    created: function() {
+      this.getPosts();
     },
   },
   methods: {
-    addItem: function() {
-      axios.post("/api/items", {
-      	text: this.text,
-        selected: this.selected,
-      	completed: false
+    getPosts: function() {
+      axios.get("/api/posts").then(response => {
+        this.posts = response.data;
+        return true;
+      }).catch(err => {
+      });
+    },
+    addPost: function() {
+      axios.post("/api/posts", {
+        user:this.addedUser,
+        team:this.addedTeam,
+        date:this.addedDate,
+        miles:this.addedMiles,
+        goal:this.addedGoal,
+        time:this.addedDuration,
+        weather:this.addedWeather,
+        text:this.addedComment,
       }).then(response => {
-      	this.text = "";
-        this.selected = 'Medium';
-      	this.getItems();
-      	return true;
-        }).catch(err => {
-        });
-    },
-    getItems: function() {
-      axios.get("/api/items").then(response => {
-        this.items = response.data;
+        this.addedUser = '';
+        this.addedTeam = '';
+        this.addedDate = '';
+        this.addedMiles = '';
+        this.addedGoal = '';
+        this.addedDuration = '';
+        this.addedWeather = '';
+        this.addedComment = '';
+        this.getPosts();
         return true;
       }).catch(err => {
       });
     },
-    completeItem: function(item) {
-      axios.put("/api/items/" + item.id, {
-        text: item.text,
-        completed: !item.completed,
-        selected: item.selected,
-        orderChange: false,
-      }).then(response => {
+    deletePost: function(post) {
+      axios.delete("/api/posts/" + post.id).then(response => {
+        this.getPosts();
         return true;
       }).catch(err => {
       });
-    },
-    updatePriority: function(item) {
-      axios.put("/api/items/" + item.id, {
-        selected: item.selected,
-        text: item.text,
-        completed: item.completed,
-        orderChange: false,
-      }).then(response => {
-        return true;
-      }).catch(err => {
-      });
-    },
-    deleteItem: function(item) {
-      axios.delete("/api/items/" + item.id).then(response => {
-      	this.getItems();
-      	return true;
-      }).catch(err => {
-      });
-    },
-    showAll: function() {
-      this.show = 'all';
-    },
-    showActive: function() {
-      this.show = 'active';
-    },
-    showCompleted: function() {
-      this.show = 'completed';
-    },
-    deleteCompleted: function() {
-      this.items.forEach(item => {
-      	if (item.completed)
-      	  this.deleteItem(item)
-      });
-    },
-    sortItems: function() {
-      axios.get("/api/items/sort").then(response => {
-        this.getItems();
-        return true;
-      }).catch(err => {
-      });
-    },
-    dragItem: function(item) {
-      this.drag = item;
-    },
-    dropItem: function(item) {
-      axios.put("/api/items/" + this.drag.id, {
-      	text: this.drag.text,
-      	completed: this.drag.completed,
-        selected: this.drag.selected,
-      	orderChange: true,
-      	orderTarget: item.id
-        }).then(response => {
-        	this.getItems();
-        	return true;
-        }).catch(err => {
-        });
     },
   }
 });

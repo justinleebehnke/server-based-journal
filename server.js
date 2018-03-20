@@ -7,63 +7,39 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public'))
 
-let items = [];
+let posts = [];
 let id = 0;
 
-app.get('/api/items', (req, res) => {
-  res.send(items);
-});
-app.get('/api/items/sort', (req, res) => {
-  items.sort(function(a,b) {
-    if (a.selected === "High") {
-      return -1;
-    }
-    if (b.selected === "High") {
-      return 1;
-    }
-    if (a.selected === "Low") {
-      return 1;
-    }
-    if (b.selected === "Low") {
-      return -1;
-    }
-    return 0;
-  })
-  res.send(items);
+app.get('/api/posts', (req, res) => {
+  res.send(posts);
 });
 
-app.post('/api/items', (req, res) => {
+app.post('/api/posts', (req, res) => {
   id = id + 1;
-  let item = {id:id, selected:req.body.selected, text:req.body.text, completed: req.body.completed};
-  items.push(item);
-  res.send(item);
+  let post = {
+          id:id,
+          user:req.body.user,
+          team:req.body.team,
+          date:req.body.date,
+          miles:req.body.miles,
+          goal:req.body.goal,
+          time:req.body.time,
+          weather:req.body.weather,
+          text:req.body.text
+          };
+  posts.push(post);
+  res.send(post);
 });
 
-app.put('/api/items/:id', (req, res) => {
+app.delete('/api/posts/:id', (req, res) => {
   let id = parseInt(req.params.id);
-  let itemsMap = items.map(item => { return item.id; });
-  let index = itemsMap.indexOf(id);
-  let item = items[index];
-  item.completed = req.body.completed;
-  item.text = req.body.text;
-  item.selected = req.body.selected;
-  // handle drag and drop re-ordering
-  if (req.body.orderChange) {
-    let indexTarget = itemsMap.indexOf(req.body.orderTarget);
-    items.splice(index,1);
-    items.splice(indexTarget,0,item);
-  }
-  res.send(item);
-});
-
-app.delete('/api/items/:id', (req, res) => {
-  let id = parseInt(req.params.id);
-  let removeIndex = items.map(item => { return item.id; }).indexOf(id);
+  let removeIndex = posts.map(post => { return post.id; }).indexOf(id);
   if (removeIndex === -1) {
     res.status(404).send("Sorry, that item doesn't exist");
     return;
   }
-  items.splice(removeIndex, 1);
+  posts.splice(removeIndex, 1);
   res.sendStatus(200);
 });
-app.listen(3000, () => console.log('Server listening on port 3000!'))
+
+app.listen(4000, () => console.log('Server listening on port 4000!'))
